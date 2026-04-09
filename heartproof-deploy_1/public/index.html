@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeartProof — Know Before You Fall</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --red-bright: #e74c3c;
+    --red-glow: #ff2d2d;
+    --dark: #0a0a0a;
+    --darker: #050505;
+    --surface: #111111;
+    --surface2: #181818;
+    --surface3: #222222;
+    --border: rgba(192,57,43,0.3);
+    --border-dim: rgba(255,255,255,0.06);
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --gold: #c9a84c;
+    --gold-dim: rgba(201,168,76,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--darker);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ANIMATED BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(192,57,43,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(192,57,43,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* GRID OVERLAY */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(192,57,43,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(192,57,43,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+  }
+
+  .hero-logo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 0 30px rgba(192,57,43,0.6)) drop-shadow(0 0 60px rgba(192,57,43,0.3));
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { filter: drop-shadow(0 0 30px rgba(192,57,43,0.6)) drop-shadow(0 0 60px rgba(192,57,43,0.3)); }
+    50% { filter: drop-shadow(0 0 50px rgba(192,57,43,0.9)) drop-shadow(0 0 90px rgba(192,57,43,0.5)); }
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 90px);
+    letter-spacing: 6px;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 40%, var(--red-bright) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+
+  .hero-subtitle-word {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(14px, 3vw, 20px);
+    font-weight: 600;
+    letter-spacing: 8px;
+    color: var(--red-bright);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-tagline {
+    font-size: clamp(15px, 2.5vw, 18px);
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .hero-tagline strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--red-bright);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-text {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* TOOLS GRID */
+  .tools-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .section-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 42px);
+    letter-spacing: 3px;
+    color: var(--text);
+    margin-bottom: 32px;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red-bright), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tool-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(192,57,43,0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tool-card:hover {
+    border-color: var(--border);
+    transform: translateY(-2px);
+  }
+
+  .tool-card:hover::before { opacity: 1; }
+  .tool-card:hover::after { opacity: 1; }
+
+  .tool-card.active {
+    border-color: var(--red);
+    background: var(--surface2);
+  }
+
+  .tool-card.active::before { opacity: 1; }
+
+  .tool-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    background: rgba(192,57,43,0.08);
+    font-size: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tool-badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 3px 10px;
+    background: rgba(192,57,43,0.12);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ACTIVE TOOL PANEL */
+  .tool-panel {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-top: 2px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red-bright), transparent);
+  }
+
+  .tool-panel.visible { display: block; }
+
+  .panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+
+  .panel-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    max-width: 500px;
+  }
+
+  .close-btn {
+    background: rgba(192,57,43,0.1);
+    border: 1px solid var(--border);
+    color: var(--red-bright);
+    padding: 8px 16px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .close-btn:hover { background: rgba(192,57,43,0.2); }
+
+  /* FORM ELEMENTS */
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+  }
+
+  textarea, input[type="text"], select {
+    width: 100%;
+    background: var(--surface3);
+    border: 1px solid var(--border-dim);
+    color: var(--text);
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    border-radius: 6px;
+    resize: vertical;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  textarea:focus, input[type="text"]:focus, select:focus {
+    border-color: var(--red);
+  }
+
+  textarea { min-height: 100px; }
+
+  select { appearance: none; cursor: pointer; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  /* SLIDERS */
+  .slider-group {
+    margin-bottom: 18px;
+  }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .slider-label {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .slider-value {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--red-bright);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 3px;
+    background: var(--border-dim);
+    border-radius: 2px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--red-bright);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(231,76,60,0.4);
+  }
+
+  /* ANALYZE BUTTON */
+  .analyze-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-bright) 100%);
+    border: none;
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 24px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .analyze-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .analyze-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(192,57,43,0.4); }
+  .analyze-btn:hover::before { opacity: 1; }
+  .analyze-btn:active { transform: translateY(0); }
+  .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* RESULT */
+  .result-panel {
+    display: none;
+    margin-top: 32px;
+    border-top: 1px solid var(--border-dim);
+    padding-top: 32px;
+  }
+
+  .result-panel.visible { display: block; }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .result-score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--red-bright);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(192,57,43,0.1);
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(192,57,43,0.2);
+  }
+
+  .result-score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--red-bright);
+    line-height: 1;
+  }
+
+  .result-score-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .result-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .result-verdict {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .result-content {
+    background: var(--surface3);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 24px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    white-space: pre-wrap;
+  }
+
+  .result-content strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .result-content .flag {
+    display: inline-block;
+    background: rgba(192,57,43,0.12);
+    border-left: 2px solid var(--red-bright);
+    padding: 2px 8px;
+    margin: 2px 0;
+    color: #e88;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .loading.visible { display: block; }
+
+  .loading-heart {
+    font-size: 36px;
+    animation: heartbeat 0.8s ease-in-out infinite;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+  }
+
+  .loading-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+  }
+
+  @keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border-dim);
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--red-bright);
+    margin-bottom: 8px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  /* SCROLL REVEAL */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .fade-in.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* URGENCY BANNER */
+  .urgency-bar {
+    background: linear-gradient(90deg, var(--red) 0%, #8b0000 100%);
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .urgency-bar a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.9;
+  }
+
+  /* TRUST BADGES */
+  .trust-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .trust-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--red-bright);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .tool-panel { padding: 24px 20px; }
+    .tools-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- URGENCY BAR -->
+  <div class="urgency-bar">
+    <a href="#">⚡ Over 2.4 million relationship patterns analyzed — Your truth is waiting.</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img class="hero-logo" src="Heart_Proof.png" alt="HeartProof" onerror="this.style.display='none'">
+    <div class="hero-title">HeartProof</div>
+    <div class="hero-subtitle-word">Know Before You Fall</div>
+    <p class="hero-tagline">
+      The AI relationship intelligence system that <strong>sees what your feelings won't let you.</strong>
+      Stop guessing. Stop hurting. Start knowing.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">94%</div>
+        <div class="stat-label">Accuracy Rate</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2.4M</div>
+        <div class="stat-label">Patterns Analyzed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">9</div>
+        <div class="stat-label">Intelligence Tools</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Sugarcoating</div>
+      </div>
+    </div>
+
+    <div class="trust-row">
+      <div class="trust-item"><div class="trust-dot"></div>Psychologically Grounded</div>
+      <div class="trust-item"><div class="trust-dot"></div>Private & Encrypted</div>
+      <div class="trust-item"><div class="trust-dot"></div>No Judgment. Just Truth.</div>
+      <div class="trust-item"><div class="trust-dot"></div>Built by KLG Productions</div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-text">Select Your Intelligence Tool</div>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <!-- TOOLS SECTION -->
+  <div class="tools-section">
+    <div class="section-label">9 Tools · 1 Platform</div>
+    <div class="section-title">YOUR RELATIONSHIP INTELLIGENCE SUITE</div>
+
+    <div class="tools-grid" id="toolsGrid">
+
+      <div class="tool-card fade-in" onclick="openTool('compat')">
+        <div class="tool-icon">💠</div>
+        <div class="tool-name">Compatibility Truth Scanner</div>
+        <div class="tool-desc">Stop wondering if you're "meant for each other." Get a brutally honest compatibility score before you go any deeper.</div>
+        <div class="tool-badge">Compatibility</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('redflag')">
+        <div class="tool-icon">🚩</div>
+        <div class="tool-name">Red Flag Detector</div>
+        <div class="tool-desc">Upload screenshots or describe behavior. AI tells you what you already sense but won't say out loud.</div>
+        <div class="tool-badge">Warning</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('breakup')">
+        <div class="tool-icon">📉</div>
+        <div class="tool-name">Breakup Probability Forecast</div>
+        <div class="tool-desc">Based on your patterns and communication, here's where this is actually headed — and what would change it.</div>
+        <div class="tool-badge">Forecast</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('translator')">
+        <div class="tool-icon">🔍</div>
+        <div class="tool-name">What They Really Meant</div>
+        <div class="tool-desc">Decode confusing texts, mixed signals, and vague responses. Stop reading between the lines alone.</div>
+        <div class="tool-badge">Decoder</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('staygo')">
+        <div class="tool-icon">⚖️</div>
+        <div class="tool-name">Stay or Go Decision Engine</div>
+        <div class="tool-desc">Not emotion — logic. Evaluate safety, respect, growth, and future alignment. Then get a real answer.</div>
+        <div class="tool-badge">Decision</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('mirror')">
+        <div class="tool-icon">🪞</div>
+        <div class="tool-name">Relationship Pattern Mirror</div>
+        <div class="tool-desc">See your cycles, your type, your blind spots, your self-sabotage — across your entire dating history.</div>
+        <div class="tool-badge">Self-Awareness</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('chemistry')">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-name">Chemistry Predictor</div>
+        <div class="tool-desc">Predict real chemistry before the first date. No more wasted evenings. Know if there's a spark before you light it.</div>
+        <div class="tool-badge">Prediction</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('attachment')">
+        <div class="tool-icon">🔗</div>
+        <div class="tool-name">Attachment Style Analyzer</div>
+        <div class="tool-desc">Discover your attachment blueprint — secure, anxious, avoidant — and how it's shaping every relationship you've had.</div>
+        <div class="tool-badge">Psychology</div>
+      </div>
+
+      <div class="tool-card fade-in" onclick="openTool('future')">
+        <div class="tool-icon">🔮</div>
+        <div class="tool-name">Future Self Alignment</div>
+        <div class="tool-desc">Does who you're becoming align with who they are? See if your 5-year trajectories lead toward each other or away.</div>
+        <div class="tool-badge">Alignment</div>
+      </div>
+
+    </div>
+
+    <!-- TOOL PANELS -->
+
+    <!-- 1. COMPATIBILITY SCANNER -->
+    <div class="tool-panel" id="panel-compat">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">COMPATIBILITY TRUTH SCANNER</div>
+          <div class="panel-subtitle">Answer honestly. This tool doesn't comfort — it clarifies. The truth you receive here could save you years.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('compat')">✕ Close</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Communication Style</label>
+          <select id="c-comm1">
+            <option value="">Select yours...</option>
+            <option>Direct & blunt — say what I mean</option>
+            <option>Thoughtful — I process before I speak</option>
+            <option>Emotional — I express feelings freely</option>
+            <option>Avoidant — I pull back during conflict</option>
+            <option>Passive — I avoid confrontation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Their Communication Style</label>
+          <select id="c-comm2">
+            <option value="">Select theirs...</option>
+            <option>Direct & blunt — say what I mean</option>
+            <option>Thoughtful — I process before I speak</option>
+            <option>Emotional — I express feelings freely</option>
+            <option>Avoidant — I pull back during conflict</option>
+            <option>Passive — I avoid confrontation</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Core Values (select closest)</label>
+          <select id="c-val1">
+            <option value="">Your values...</option>
+            <option>Faith & spiritual growth</option>
+            <option>Family first — everything else second</option>
+            <option>Career & ambition</option>
+            <option>Freedom & adventure</option>
+            <option>Stability & security</option>
+            <option>Service & community impact</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Their Core Values</label>
+          <select id="c-val2">
+            <option value="">Their values...</option>
+            <option>Faith & spiritual growth</option>
+            <option>Family first — everything else second</option>
+            <option>Career & ambition</option>
+            <option>Freedom & adventure</option>
+            <option>Stability & security</option>
+            <option>Service & community impact</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe how conflict typically plays out between you</label>
+        <textarea id="c-conflict" placeholder="e.g. We argue, they go quiet for days. I reach out first every time. It always comes back to the same issue about trust..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What drew you to them initially? What concerns you now?</label>
+        <textarea id="c-context" placeholder="e.g. I was drawn to their confidence and humor. Now I notice they rarely ask about my day or check on me emotionally..."></textarea>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">How often do you feel truly understood by them?</span>
+          <span class="slider-value" id="c-understood-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('c-understood-val').textContent=this.value">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">How aligned are your life visions? (1=opposite, 10=identical)</span>
+          <span class="slider-value" id="c-vision-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('c-vision-val').textContent=this.value">
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('compat')">SCAN COMPATIBILITY</button>
+
+      <div class="loading" id="loading-compat">
+        <span class="loading-heart">❤️</span>
+        <div class="loading-text">Analyzing your patterns<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-compat"></div>
+    </div>
+
+    <!-- 2. RED FLAG DETECTOR -->
+    <div class="tool-panel" id="panel-redflag">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">RED FLAG DETECTOR</div>
+          <div class="panel-subtitle">Paste screenshots, texts, or describe the behavior. AI reads the patterns — not just the words.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('redflag')">✕ Close</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Paste a conversation, message, or describe recent behavior</label>
+        <textarea id="rf-text" style="min-height:160px" placeholder='e.g. "I told them I was upset and they said I was being dramatic. Later that night they sent me memes like nothing happened. When I brought it up again they said I always start drama..."'></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">How long have you known them?</label>
+          <select id="rf-duration">
+            <option>Less than 1 month</option>
+            <option>1–3 months</option>
+            <option>3–6 months</option>
+            <option>6 months–1 year</option>
+            <option>Over 1 year</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">How often does this type of behavior occur?</label>
+          <select id="rf-frequency">
+            <option>This was a one-time thing</option>
+            <option>Occasionally (once a month)</option>
+            <option>Frequently (weekly)</option>
+            <option>Almost always</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What's your gut telling you about this?</label>
+        <textarea id="rf-gut" placeholder="e.g. Something feels off but I can't explain it. They're great most of the time but these moments make me question everything..."></textarea>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('redflag')">DETECT RED FLAGS</button>
+
+      <div class="loading" id="loading-redflag">
+        <span class="loading-heart">🚩</span>
+        <div class="loading-text">Reading the patterns<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-redflag"></div>
+    </div>
+
+    <!-- 3. BREAKUP PROBABILITY -->
+    <div class="tool-panel" id="panel-breakup">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">BREAKUP PROBABILITY FORECAST</div>
+          <div class="panel-subtitle">This is data, not doom. What you do with this forecast is entirely yours — but you deserve to know.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('breakup')">✕ Close</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe the current state of your relationship</label>
+        <textarea id="bp-state" style="min-height:120px" placeholder="e.g. We used to talk every day. Now a week goes by with barely a text. When we do talk it feels surface-level. Arguments are more frequent and nothing gets resolved..."></textarea>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Communication frequency vs. 3 months ago</span>
+          <span class="slider-value" id="bp-comm-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('bp-comm-val').textContent=this.value">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-top:4px"><span>Much less</span><span>Same</span><span>Much more</span></div>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Emotional reciprocity — do they match your effort?</span>
+          <span class="slider-value" id="bp-recip-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('bp-recip-val').textContent=this.value">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">After conflict — how quickly do you repair?</span>
+          <span class="slider-value" id="bp-repair-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('bp-repair-val').textContent=this.value">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-top:4px"><span>Never/rarely</span><span>Sometimes</span><span>Always quickly</span></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What has been the recurring argument or tension point?</label>
+        <textarea id="bp-conflict" placeholder="e.g. Trust issues from early in the relationship. They feel I'm too needy. I feel they're emotionally unavailable..."></textarea>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('breakup')">RUN FORECAST</button>
+
+      <div class="loading" id="loading-breakup">
+        <span class="loading-heart">📉</span>
+        <div class="loading-text">Calculating trajectory<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-breakup"></div>
+    </div>
+
+    <!-- 4. TRANSLATOR -->
+    <div class="tool-panel" id="panel-translator">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">WHAT THEY REALLY MEANT</div>
+          <div class="panel-subtitle">The words people use in dating are rarely the whole truth. Let's translate what's actually being communicated.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('translator')">✕ Close</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Paste the exact message or phrase you received</label>
+        <textarea id="tr-message" placeholder='e.g. "I really like you, I just need some space right now. Let&apos;s see where things go..."'></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What context surrounds this message? (What happened before?)</label>
+        <textarea id="tr-context" placeholder="e.g. We had been talking every day for 2 months. Last weekend we had an amazing time together. Then Monday they got distant and sent this on Wednesday..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Their typical communication style</label>
+          <select id="tr-style">
+            <option>Usually warm and responsive</option>
+            <option>Generally consistent but reserved</option>
+            <option>Hot and cold — inconsistent</option>
+            <option>Rarely expressive or vulnerable</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">What do you hope it means?</label>
+          <select id="tr-hope">
+            <option>They need space but still want me</option>
+            <option>They're scared of commitment</option>
+            <option>They're testing me</option>
+            <option>I honestly don't know</option>
+            <option>I'm bracing for the worst</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('translator')">TRANSLATE THE TRUTH</button>
+
+      <div class="loading" id="loading-translator">
+        <span class="loading-heart">🔍</span>
+        <div class="loading-text">Decoding the message<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-translator"></div>
+    </div>
+
+    <!-- 5. STAY OR GO -->
+    <div class="tool-panel" id="panel-staygo">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">STAY OR GO DECISION ENGINE</div>
+          <div class="panel-subtitle">This isn't about what feels good right now. It's about what you'll be proud of when you look back.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('staygo')">✕ Close</button>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Do you feel emotionally safe with this person?</span>
+          <span class="slider-value" id="sg-safe-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('sg-safe-val').textContent=this.value">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-top:4px"><span>Not at all</span><span>Mostly yes</span><span>Completely</span></div>
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Do you feel consistently respected?</span>
+          <span class="slider-value" id="sg-respect-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('sg-respect-val').textContent=this.value">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Are you growing as a person inside this relationship?</span>
+          <span class="slider-value" id="sg-growth-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('sg-growth-val').textContent=this.value">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Is the relationship reciprocal — do both of you give and take equally?</span>
+          <span class="slider-value" id="sg-recip-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('sg-recip-val').textContent=this.value">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Do your futures actually align?</span>
+          <span class="slider-value" id="sg-future-val">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('sg-future-val').textContent=this.value">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What's the one thing that's making this decision hard?</label>
+        <textarea id="sg-hardpart" placeholder="e.g. I love who they can be, but not who they are consistently. We have history and I don't want to throw it away. I'm scared of starting over..."></textarea>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('staygo')">GET MY ANSWER</button>
+
+      <div class="loading" id="loading-staygo">
+        <span class="loading-heart">⚖️</span>
+        <div class="loading-text">Weighing your truth<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-staygo"></div>
+    </div>
+
+    <!-- 6. PATTERN MIRROR -->
+    <div class="tool-panel" id="panel-mirror">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">RELATIONSHIP PATTERN MIRROR</div>
+          <div class="panel-subtitle">You can't outrun your patterns — but you can finally see them. This is where the real work starts.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('mirror')">✕ Close</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe the type of person you keep ending up with (2–3 relationships)</label>
+        <textarea id="pm-type" style="min-height:120px" placeholder="e.g. They always start incredibly attentive, almost too good. Then slowly pull back after I'm attached. I chase. They feel smothered. We break up. I feel rejected. Repeat..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What role do you typically play in relationships?</label>
+        <select id="pm-role">
+          <option>The giver — I love harder and give more</option>
+          <option>The fixer — I try to save or change them</option>
+          <option>The chaser — I pursue more than I'm pursued</option>
+          <option>The withdrawer — I pull back when things get real</option>
+          <option>The peacekeeper — I avoid conflict at all costs</option>
+          <option>The skeptic — I expect them to leave eventually</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">How do your relationships most commonly end?</label>
+        <textarea id="pm-endings" placeholder="e.g. They drift away. I get clingy trying to hold on. Or I leave before they can hurt me. Or the same argument finally breaks us..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What's the biggest fear you bring into relationships?</label>
+        <select id="pm-fear">
+          <option>Being abandoned</option>
+          <option>Being controlled or trapped</option>
+          <option>Not being enough</option>
+          <option>Being betrayed or cheated on</option>
+          <option>Losing myself in the relationship</option>
+          <option>Loving more than I'm loved</option>
+        </select>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('mirror')">SHOW ME MY PATTERN</button>
+
+      <div class="loading" id="loading-mirror">
+        <span class="loading-heart">🪞</span>
+        <div class="loading-text">Reflecting your history<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-mirror"></div>
+    </div>
+
+    <!-- 7. CHEMISTRY PREDICTOR -->
+    <div class="tool-panel" id="panel-chemistry">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">CHEMISTRY PREDICTOR</div>
+          <div class="panel-subtitle">Some people feel like home. Others feel like a detour. Know which before you invest your heart.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('chemistry')">✕ Close</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your personality energy</label>
+          <select id="chem-you">
+            <option>High energy — I light up the room</option>
+            <option>Warm & social — I connect deeply</option>
+            <option>Calm & grounded — I'm the quiet force</option>
+            <option>Analytical & thoughtful — I observe first</option>
+            <option>Creative & spontaneous — I follow the vibe</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Their personality energy</label>
+          <select id="chem-them">
+            <option>High energy — they're always on</option>
+            <option>Warm & social — everyone loves them</option>
+            <option>Calm & grounded — steady presence</option>
+            <option>Analytical & thoughtful — deep thinker</option>
+            <option>Creative & spontaneous — unpredictable but exciting</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your humor style</label>
+          <select id="chem-humor1">
+            <option>Dry / sarcastic</option>
+            <option>Playful & silly</option>
+            <option>Witty / intellectual</option>
+            <option>Storytelling / observational</option>
+            <option>Self-deprecating</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Their humor style</label>
+          <select id="chem-humor2">
+            <option>Dry / sarcastic</option>
+            <option>Playful & silly</option>
+            <option>Witty / intellectual</option>
+            <option>Storytelling / observational</option>
+            <option>Self-deprecating</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe your first few interactions — what stood out?</label>
+        <textarea id="chem-vibe" placeholder="e.g. The conversation flowed effortlessly. We laughed at the same things. There was this tension I couldn't explain — like something unfinished. Or it felt comfortable but maybe too comfortable..."></textarea>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('chemistry')">PREDICT OUR CHEMISTRY</button>
+
+      <div class="loading" id="loading-chemistry">
+        <span class="loading-heart">⚡</span>
+        <div class="loading-text">Measuring your spark<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-chemistry"></div>
+    </div>
+
+    <!-- 8. ATTACHMENT -->
+    <div class="tool-panel" id="panel-attachment">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">ATTACHMENT STYLE ANALYZER</div>
+          <div class="panel-subtitle">Your attachment style is the invisible hand shaping every connection you've ever had. It's time to meet it.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('attachment')">✕ Close</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">When you feel close to someone, what's your internal reaction?</label>
+        <select id="att-close">
+          <option>I feel warm and safe — I lean in</option>
+          <option>I feel anxious — what if they leave?</option>
+          <option>I feel a need to pull back slightly</option>
+          <option>I go back and forth — close then distant</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">When someone doesn't respond quickly, you...</label>
+        <select id="att-silence">
+          <option>Assume they're just busy — I'm unbothered</option>
+          <option>Start spiraling — what did I do wrong?</option>
+          <option>Feel relief — I needed space anyway</option>
+          <option>Get irritated but pretend it's fine</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">After an argument, your instinct is to...</label>
+        <select id="att-conflict">
+          <option>Talk it out and reconnect quickly</option>
+          <option>Over-apologize to repair the bond</option>
+          <option>Disappear for a while to process alone</option>
+          <option>Replay the fight and feel powerless</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe one moment in a relationship where you felt most triggered or unsafe</label>
+        <textarea id="att-memory" placeholder="e.g. They didn't text me back for 6 hours and I convinced myself it was over. Or when they got too serious I found reasons to pull away. I've never fully trusted someone..."></textarea>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('attachment')">REVEAL MY ATTACHMENT STYLE</button>
+
+      <div class="loading" id="loading-attachment">
+        <span class="loading-heart">🔗</span>
+        <div class="loading-text">Mapping your blueprint<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-attachment"></div>
+    </div>
+
+    <!-- 9. FUTURE ALIGNMENT -->
+    <div class="tool-panel" id="panel-future">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">FUTURE SELF ALIGNMENT</div>
+          <div class="panel-subtitle">Love is not enough if you're both walking toward completely different lives. See where your paths actually lead.</div>
+        </div>
+        <button class="close-btn" onclick="closeTool('future')">✕ Close</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe your 5-year vision — where are you going?</label>
+        <textarea id="fut-you" placeholder="e.g. I want to build a business, possibly relocate, grow deeper in my faith, start a family within 2 years, create generational wealth..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe their 5-year vision as far as you know</label>
+        <textarea id="fut-them" placeholder="e.g. They seem focused on their current city, not sure about kids, very career-driven right now, not much talk about faith or long-term planning..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Marriage / partnership goals — yours</label>
+          <select id="fut-marry1">
+            <option>Definitely — within 1–2 years</option>
+            <option>Yes — but no rush</option>
+            <option>Open to it but unsure</option>
+            <option>Not a priority right now</option>
+            <option>I don't want marriage</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Marriage / partnership goals — theirs</label>
+          <select id="fut-marry2">
+            <option>They've said they want it soon</option>
+            <option>They want it eventually</option>
+            <option>They seem unsure</option>
+            <option>It's never come up</option>
+            <option>They've said they don't want it</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Children — your stance</label>
+          <select id="fut-kids1">
+            <option>I want children</option>
+            <option>I'm open to it</option>
+            <option>Unsure</option>
+            <option>I don't want children</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Children — their stance</label>
+          <select id="fut-kids2">
+            <option>They want children</option>
+            <option>They seem open</option>
+            <option>They've never said</option>
+            <option>They don't want children</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="analyze-btn" onclick="runAnalysis('future')">CHECK OUR ALIGNMENT</button>
+
+      <div class="loading" id="loading-future">
+        <span class="loading-heart">🔮</span>
+        <div class="loading-text">Mapping your futures<span class="loading-dots"></span></div>
+      </div>
+
+      <div class="result-panel" id="result-future"></div>
+    </div>
+
+  </div><!-- /tools-section -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">HEARTPROOF</div>
+    <div class="footer-text">Built by KLG Productions · AI-Powered Relationship Intelligence · Pittsburgh, PA</div>
+    <div style="margin-top:12px;font-size:11px;color:var(--text-dim)">HeartProof does not replace therapy, counseling, or professional mental health support.<br>This tool is designed to illuminate — your decisions remain entirely your own.</div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  // ── TOOL OPEN/CLOSE ──────────────────────────────────────────────
+  let currentTool = null;
+
+  function openTool(id) {
+    if (currentTool) closeTool(currentTool);
+    currentTool = id;
+    document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    const panel = document.getElementById('panel-' + id);
+    panel.classList.add('visible');
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+
+  function closeTool(id) {
+    document.getElementById('panel-' + id).classList.remove('visible');
+    document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+    currentTool = null;
+  }
+
+  // ── SCROLL REVEAL ────────────────────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('revealed'), i * 60);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── SYSTEM PROMPTS ───────────────────────────────────────────────
+  const systemPrompts = {
+    compat: `You are HeartProof's Compatibility Truth Scanner — a psychologically-grounded AI relationship analyst. 
+Your job is to give honest, clear compatibility assessments based on user-submitted data about their communication styles, values, conflict patterns, and emotional connection.
+
+Respond in this exact format:
+
+COMPATIBILITY SCORE: [a number from 1-100]
+VERDICT: [one bold sentence — the core truth about this match]
+
+WHAT'S WORKING:
+[2-3 specific strengths in this pairing]
+
+WHERE IT BREAKS DOWN:
+[2-3 honest friction points or misalignments]
+
+THE REAL QUESTION:
+[One powerful question they should sit with]
+
+WHAT THIS NEEDS:
+[1-2 specific things that would actually shift this dynamic]
+
+Be warm but never sugarcoat. Be specific. Be the honest friend they needed.`,
+
+    redflag: `You are HeartProof's Red Flag Detector — trained on attachment psychology, relationship patterns, and behavioral analysis.
+
+Analyze the described behavior or conversation for warning signs. Be direct and compassionate.
+
+Respond in this exact format:
+
+THREAT LEVEL: [NONE / LOW / MODERATE / HIGH / CRITICAL]
+CORE FINDING: [One sentence that names exactly what's happening]
+
+FLAGS DETECTED:
+[List each red flag clearly — name it, explain it, and why it matters]
+
+WHAT YOUR GUT IS RIGHT ABOUT:
+[Validate what they already sense]
+
+WHAT THIS BEHAVIOR PATTERN TYPICALLY LEADS TO:
+[Be honest about the trajectory if unchanged]
+
+WHAT YOU DESERVE TO KNOW:
+[The truth they may be avoiding]
+
+Be honest. Be clear. Never blame the user. This is pattern recognition, not judgment.`,
+
+    breakup: `You are HeartProof's Breakup Probability Forecaster. You analyze relationship health data to predict trajectory.
+
+Give a probability and a path forward — honest but not hopeless.
+
+Format:
+
+BREAKUP PROBABILITY: [X%]
+TRAJECTORY: [DECLINING / STABLE / IMPROVING / CRITICAL]
+
+DRIVING FACTORS:
+[What's pulling this relationship toward a breakup]
+
+WHAT'S KEEPING IT TOGETHER:
+[Honest assessment of what's still working]
+
+THE TIPPING POINT:
+[What specific change would shift this forecast significantly]
+
+IF NOTHING CHANGES, IN 6 MONTHS:
+[Honest prediction]
+
+IF [KEY THING] CHANGES:
+[The alternate scenario]
+
+Be truthful. Be specific. This is data in service of clarity — not doom.`,
+
+    translator: `You are HeartProof's Relationship Language Decoder. Modern dating communication is often coded, vague, and emotionally loaded.
+
+Decode exactly what the message most likely means.
+
+Format:
+
+SURFACE MESSAGE: [what they said]
+WHAT THEY LIKELY MEAN: [the real interpretation]
+WHAT THEY ALMOST CERTAINLY DON'T MEAN: [debunk false hopes if present]
+
+EMOTIONAL SUBTEXT:
+[What's happening emotionally underneath the words]
+
+WHAT THIS TYPICALLY SIGNALS:
+[Pattern-based insight on what this type of message usually indicates]
+
+WHAT TO DO WITH THIS:
+[Clear, specific guidance — not vague advice]
+
+THE ONE THING TO WATCH FOR NEXT:
+[What their next behavior will reveal]
+
+Be honest. Be specific. Never let them read into things that aren't there.`,
+
+    staygo: `You are HeartProof's Stay or Go Decision Engine — logical, compassionate, and direct.
+
+You evaluate relationships on safety, respect, growth, reciprocity, and future alignment.
+
+Format:
+
+RECOMMENDATION: [STAY — WITH CONDITIONS / GO — WITH COMPASSION / DECISION UNCLEAR]
+CONFIDENCE: [X%]
+
+THE CORE FINDING:
+[One clear sentence about what this situation actually is]
+
+WHAT THE DATA SAYS:
+[Logical breakdown of safety, respect, growth, reciprocity, alignment scores]
+
+WHAT'S REALLY MAKING THIS HARD:
+[Name the emotional barrier keeping them stuck]
+
+IF YOU STAY:
+[Honest projection — what must change and what staying costs]
+
+IF YOU GO:
+[What going would require and what it would give back]
+
+THE QUESTION YOU HAVEN'T ASKED YOURSELF:
+[The one thing they need to sit with]
+
+Never romanticize staying. Never dismiss what's real. Just the truth.`,
+
+    mirror: `You are HeartProof's Relationship Pattern Mirror — you reflect patterns across a person's dating history with clarity and compassion.
+
+Format:
+
+YOUR PATTERN: [Name it clearly — e.g. "The Anxious Pursuer" / "The Emotional Rescuer" / "The Pre-Emptive Leaver"]
+
+THE CYCLE:
+[Describe their repeating loop step by step]
+
+YOUR TYPE:
+[Who they keep choosing and why at a psychological level]
+
+YOUR BLIND SPOT:
+[What they consistently miss or ignore]
+
+THE SELF-SABOTAGE:
+[How they unconsciously undermine what they want]
+
+WHERE THIS STARTS:
+[The likely root — fear, wound, or learned behavior]
+
+WHAT BREAKS THE CYCLE:
+[Specific and honest — not generic advice]
+
+Be direct. Be compassionate. This is a mirror, not a verdict.`,
+
+    chemistry: `You are HeartProof's Chemistry Predictor — you assess the potential for real connection based on personality, humor, energy, and interaction data.
+
+Format:
+
+CHEMISTRY SCORE: [X/10]
+TYPE: [ELECTRIC / MAGNETIC / COMFORTABLE / SURFACE-LEVEL / MISMATCHED]
+
+WHAT'S GENERATING THE SPARK:
+[Specific dynamic creating attraction]
+
+WHAT COULD DAMPEN IT:
+[Where friction is likely to emerge]
+
+IS THIS SUSTAINABLE OR SITUATIONAL?
+[Long-term chemistry vs. a moment in time]
+
+THE DANGER ZONE:
+[What this chemistry type often mistakenly becomes]
+
+THE POTENTIAL:
+[What this could be if both people show up fully]
+
+ONE THING TO PAY ATTENTION TO ON THE NEXT INTERACTION:
+[Specific and actionable]
+
+Be specific. Be real. Chemistry is complex — honor that.`,
+
+    attachment: `You are HeartProof's Attachment Style Analyzer — trained in adult attachment theory (secure, anxious, avoidant, disorganized/fearful).
+
+Format:
+
+YOUR ATTACHMENT STYLE: [SECURE / ANXIOUS-PREOCCUPIED / DISMISSIVE-AVOIDANT / FEARFUL-AVOIDANT]
+CONFIDENCE: [X%]
+
+WHAT THIS MEANS:
+[Clear, compassionate description of this style]
+
+HOW THIS SHOWS UP IN YOUR RELATIONSHIPS:
+[Specific behaviors they likely exhibit]
+
+YOUR TRIGGERS:
+[What activates your attachment system]
+
+YOUR DEFAULT RESPONSE TO CLOSENESS:
+[What you do when someone gets truly close]
+
+WHAT YOU NEED IN A PARTNER:
+[Honest compatibility guidance based on attachment]
+
+THE PATH TO MORE SECURITY:
+[Practical, not patronizing — what actually shifts attachment patterns]
+
+Be warm. Be specific. This is not a diagnosis — it's a map.`,
+
+    future: `You are HeartProof's Future Self Alignment Engine. You assess whether two people's life trajectories are compatible.
+
+Format:
+
+ALIGNMENT SCORE: [X/10]
+VERDICT: [ALIGNED / CONDITIONALLY ALIGNED / DIVERGING / INCOMPATIBLE]
+
+WHERE YOU'RE POINTED IN THE SAME DIRECTION:
+[Specific overlaps]
+
+WHERE YOUR PATHS DIVERGE:
+[Specific misalignments — be direct about what won't resolve itself]
+
+THE CONVERSATION THAT HAS TO HAPPEN:
+[The specific topic they need to address directly]
+
+THE RISK OF IGNORING THIS:
+[What happens if they avoid the divergence]
+
+CAN LOVE BRIDGE THIS GAP?
+[Honest answer — sometimes yes, sometimes no]
+
+WHAT ALIGNMENT ACTUALLY REQUIRES HERE:
+[Not compromise — but what would actually work]
+
+Be honest. Love is real. But so is incompatibility.`
+  };
+
+  // ── GATHER INPUTS ────────────────────────────────────────────────
+  function gatherInputs(toolId) {
+    const get = id => {
+      const el = document.getElementById(id);
+      return el ? el.value || '' : '';
+    };
+
+    const maps = {
+      compat: () => `Communication styles: Mine = ${get('c-comm1')}, Theirs = ${get('c-comm2')}. Core values: Mine = ${get('c-val1')}, Theirs = ${get('c-val2')}. Conflict patterns: ${get('c-conflict')}. What drew me to them / concerns: ${get('c-context')}. Feeling understood (1-10): ${get('c-understood-val')||5}. Vision alignment (1-10): ${get('c-vision-val')||5}.`,
+      redflag: () => `Message or behavior: ${get('rf-text')}. How long known: ${get('rf-duration')}. Frequency: ${get('rf-frequency')}. Gut feeling: ${get('rf-gut')}.`,
+      breakup: () => `Current state: ${get('bp-state')}. Communication vs 3mo ago (1-10): ${get('bp-comm-val')||5}. Reciprocity (1-10): ${get('bp-recip-val')||5}. Repair speed (1-10): ${get('bp-repair-val')||5}. Recurring tension: ${get('bp-conflict')}.`,
+      translator: () => `Message received: ${get('tr-message')}. Context: ${get('tr-context')}. Their style: ${get('tr-style')}. What I hope it means: ${get('tr-hope')}.`,
+      staygo: () => `Emotional safety (1-10): ${get('sg-safe-val')||5}. Respect (1-10): ${get('sg-respect-val')||5}. Personal growth (1-10): ${get('sg-growth-val')||5}. Reciprocity (1-10): ${get('sg-recip-val')||5}. Future alignment (1-10): ${get('sg-future-val')||5}. What's making this hard: ${get('sg-hardpart')}.`,
+      mirror: () => `Relationship type I keep attracting: ${get('pm-type')}. My role: ${get('pm-role')}. How things end: ${get('pm-endings')}. My biggest fear: ${get('pm-fear')}.`,
+      chemistry: () => `My personality energy: ${get('chem-you')}. Their energy: ${get('chem-them')}. My humor: ${get('chem-humor1')}. Their humor: ${get('chem-humor2')}. Our vibe so far: ${get('chem-vibe')}.`,
+      attachment: () => `When I feel close: ${get('att-close')}. When they don't respond: ${get('att-silence')}. After argument: ${get('att-conflict')}. Triggered moment: ${get('att-memory')}.`,
+      future: () => `My 5yr vision: ${get('fut-you')}. Their 5yr vision: ${get('fut-them')}. My marriage goal: ${get('fut-marry1')}. Their marriage stance: ${get('fut-marry2')}. My kids stance: ${get('fut-kids1')}. Their kids stance: ${get('fut-kids2')}.`
+    };
+
+    return maps[toolId] ? maps[toolId]() : 'Please describe your situation.';
+  }
+
+  // ── RUN ANALYSIS ─────────────────────────────────────────────────
+  async function runAnalysis(toolId) {
+    const btn = document.querySelector(`#panel-${toolId} .analyze-btn`);
+    const loading = document.getElementById(`loading-${toolId}`);
+    const resultPanel = document.getElementById(`result-${toolId}`);
+
+    btn.disabled = true;
+    loading.classList.add('visible');
+    resultPanel.classList.remove('visible');
+    resultPanel.innerHTML = '';
+
+    const userInput = gatherInputs(toolId);
+    const systemPrompt = systemPrompts[toolId];
+
+    try {
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system: systemPrompt, userInput })
+      });
+
+      const data = await response.json();
+      if (!response.ok) { throw new Error(data.error || 'Server error ' + response.status); }
+      const text = data.text || 'No response received.';
+
+      loading.classList.remove('visible');
+      resultPanel.innerHTML = renderResult(text, toolId);
+      resultPanel.classList.add('visible');
+      resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      loading.classList.remove('visible');
+      resultPanel.innerHTML = '<div class="result-content" style="color:var(--red-bright)">Error: ' + err.message + '</div>';
+      resultPanel.classList.add('visible');
+    }
+
+    btn.disabled = false;
+  }
+
+  // ── RENDER RESULT ────────────────────────────────────────────────
+  function renderResult(text, toolId) {
+    const scoreMatch = text.match(/(?:SCORE|PROBABILITY|LEVEL|SCORE):\s*(\d+)/i);
+    const score = scoreMatch ? scoreMatch[1] : null;
+
+    const verdictMatch = text.match(/(?:VERDICT|CORE FINDING|TYPE|TRAJECTORY|RECOMMENDATION|YOUR PATTERN|YOUR ATTACHMENT STYLE):\s*(.+)/i);
+    const verdict = verdictMatch ? verdictMatch[1].trim() : '';
+
+    const formatted = text
+      .replace(/\n{3,}/g, '\n\n')
+      .replace(/^([A-Z][A-Z\s\/\-]+):$/gm, '<strong style="color:var(--text);display:block;margin-top:16px;margin-bottom:4px;font-family:Rajdhani,sans-serif;letter-spacing:1px;font-size:15px;">$1:</strong>')
+      .replace(/^([A-Z][A-Z\s\/\-]+):\s(.+)$/gm, '<strong style="color:var(--text);font-family:Rajdhani,sans-serif;letter-spacing:1px;">$1:</strong> $2')
+      .replace(/\n/g, '<br>');
+
+    const scoreHTML = score ? `
+      <div class="result-header">
+        <div class="result-score-circle">
+          <div class="result-score-num">${score}</div>
+          <div class="result-score-label">Score</div>
+        </div>
+        <div>
+          <div class="result-title">Analysis Complete</div>
+          <div class="result-verdict">${verdict}</div>
+        </div>
+      </div>` : verdict ? `
+      <div class="result-header" style="margin-bottom:20px;">
+        <div>
+          <div class="result-title">Analysis Complete</div>
+          <div class="result-verdict" style="font-size:15px;color:var(--text-muted)">${verdict}</div>
+        </div>
+      </div>` : '';
+
+    return `${scoreHTML}<div class="result-content">${formatted}</div>`;
+  }
+</script>
+</body>
+</html>
